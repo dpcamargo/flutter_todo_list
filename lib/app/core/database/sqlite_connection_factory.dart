@@ -23,8 +23,7 @@ class SqliteConnectionFactory {
     var databasePath = await getDatabasesPath();
     var databasePathFinal = join(databasePath, _DATABASE_NAME);
     if (_db == null) {
-      await _lock.synchronized(
-        () async {
+      await _lock.synchronized(() async {
           _db ??= await openDatabase(
             databasePathFinal,
             version: _VERSION,
@@ -39,8 +38,8 @@ class SqliteConnectionFactory {
     return _db!;
   }
 
-  void closeConnection() {
-    _db?.close();
+  Future<void> closeConnection() async {
+    await _db?.close();
     _db = null;
   }
 
